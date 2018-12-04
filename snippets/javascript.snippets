@@ -1,0 +1,66 @@
+snippet log
+	console.log(${1});${2}
+
+# -----------------------------------------
+# special snippets for react native
+# -----------------------------------------
+snippet import React
+	import React from 'react-native';
+snippet import Component
+	import ${1:ComponentName} from '${2:ComponentPath}';
+snippet cla Class
+	class ${1:ClassName} extends Component {
+	}${2}
+snippet cla Class With Render
+	class ${1:ClassName} extends Component {
+		render() {
+			return (
+			);
+		}
+	}${2}
+snippet init constructor
+	constructor(props) {
+	  super(props);
+	  this.state = {
+	    ${1:key}: ${2:value},
+	  }
+	}${3}
+snippet init getInitialState
+	getInitialState() {
+	  return {
+	    ${1:key}: ${2:value},
+	  }
+	},${2}
+snippet p
+	this.props.${1}
+snippet s
+	this.state.${1}
+snippet render
+	render() {
+		return (
+			${1:<View />}
+		);
+	}${2}
+snippet view
+	<View style={${1:styles.container}}>
+	  ${2}
+	</View>${3}
+snippet text
+	<Text style={${1:styles.text}}>
+	  ${2}
+	</Text>${3}
+snippet set
+	this.setState({
+	  ${1:key}: ${2:value},
+	});${3}
+snippet style
+	var styles = StyleSheet.create({
+	  ${1}
+	});${2}
+snippet button
+	<TouchableHighlight
+	  style={${1:styles.button}}
+	  onPress={${2:this.handlePressed}}
+	  underlayColor="${3:#F0F0F0}">
+	  ${4:<Text> Click Me! </Text>}
+	</TouchableHighlight>${5}
