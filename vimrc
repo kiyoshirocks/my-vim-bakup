@@ -1,35 +1,11 @@
-"       ┌────────────────────────────────────┐
-"       │▌ ▌▗          ▌  ▗   ▛▀▖      ▌     │
-"       │▙▞ ▄ ▌ ▌▞▀▖▞▀▘▛▀▖▄   ▙▄▘▞▀▖▞▀▖▌▗▘▞▀▘│
-"       │▌▝▖▐ ▚▄▌▌ ▌▝▀▖▌ ▌▐ ▗▖▌▚ ▌ ▌▌ ▖▛▚ ▝▀▖│
-"       │▘ ▘▀▘▗▄▘▝▀ ▀▀ ▘ ▘▀▘▝▘▘ ▘▝▀ ▝▀ ▘ ▘▀▀ │
-"       └────────────────────────────────────┘
-"       --  https://kiyoshirocks.github.io  --
-"          It's Kiyoshi's vim settings from:
-"       https://github.com/kiyoshirocks/my-vimrc 
-
-
-" ----------------------------------------------------
-" Vundle.vim - vim plugin manager 
-" source: https://github.com/VundleVim/Vundle.vim
-" ----------------------------------------------------
-" 
-" usage:
-" ,,            toggle NERDTree
-" cc            comment line
-" cu            uncomment line
-" ce            comment to EOL
-" Ctrl-n        toggle mouse
-" Ctrl-l        toggle wrap
-" Ctrl-t        transform tab to space
-"
 " ----------------------------------------------------
 " Setting start
 " ----------------------------------------------------
-set nocompatible
+set      nocompatible
+set      rtp+=~/.vim/bundle/Vundle.vim
+call     vundle#begin()
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+
 Plugin 'VundleVim/Vundle.vim'
 
 " Add your plugins here
@@ -53,22 +29,132 @@ Plugin 'Shougo/neocomplete.vim'
 
 Plugin 'w0rp/ale'
 Plugin 'kien/ctrlp.vim'
-Plugin 'tpope/vim-markdown'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rails'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+
+Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'junegunn/vim-easy-align'
 
 
-filetype plugin indent on
-call vundle#end() 
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 
-nmap <Leader>,,       :TagbarToggle<CR>
+
 
 "
+
+" ----------------------------------------------------
+" Key mapping
+" ----------------------------------------------------
+
+" set <Leader>
+" let mapleader = "\\"
+
+map <silent>        <Leader>\ :noh<cr>
+map <leader><space> :FixWhitespace<cr>
+
+" navigating for long lines
+
+map     j      gj
+map     k      gk
+map     <UP>   gk
+map     <DOWN> gj
+noremap H      ^
+noremap L      $
+
+" add a new line without entering insert mode
+nmap <CR> o<Esc>
+
+" let <BackSpace> backspaces
+noremap <bs> X
+
+" nerd tree toggle
+
+map  <F1> :NERDTreeToggle<CR>
+map! <F1> <Esc>:NERDTreeToggle<CR>
+
+" tagbar
+map  <F2> :TagbarToggle<CR>
+map! <F2> <Esc>:TagbarToggle<CR>
+
+" toggle wrap
+map  <F3> :set wrap! wrap?<CR>
+map! <F3> :set wrap! wrap?<CR>
+
+map  <F4> :set nonumber! number?<CR>
+map! <F4> :set nonumber! number?<CR>
+
+" toggle paste mode
+set pastetoggle=<F5>
+
+map  <F6> :exec exists('syntax_on') ? 'syn off' : 'syn on'<CR>
+map! <F6> :exec exists('syntax_on') ? 'syn off' : 'syn on'<CR>
+map  <F7> :call SwitchMouseMode()<CR>
+map! <F7> <Esc>:call SwitchMouseMode()<CR>
+
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+
+" nerd commenter
+let g:NERDSpaceDelims=1
+nmap cc          <plug>NERDCommenterComment<DOWN>
+nmap cu          <plug>NERDCommenterUncomment<DOWN>
+nmap cs          <plug>NERDCommenterSexy<DOWN>
+nmap ci          <plug>NERDCommenterInvert<DOWN>
+nmap cy          <plug>NERDCommenterYank<DOWN>
+nmap ce          <plug>NERDCommenterToEOL<DOWN>
+nmap c<space>    <plug>NERDCommenterToggle<DOWN>
+
+" tab to space : ctrl-t
+
+map  <C-t> :call TabToSpaces()<CR>
+map! <C-t> <Esc>:call TabToSpaces()<CR>
+
+
+
+" ----------------------------------------------------
+" Functions
+" ----------------------------------------------------
+
+function TabToSpaces()
+    retab
+    echo "Convert tab to spaces."
+endfunction
+
+function SwitchLineBreakingMode()
+    if (&wrap == 0)
+        set wrap
+        echo "Switch to line breaking mode."
+    else
+        set nowrap
+        echo "Switch to one line mode."
+    endif
+endfunction
+
+" toggle mouse
+
+function SwitchMouseode()
+    if (&mouse == "a")
+        let &mouse = ""
+        echo "Mouse is disabled."
+    else
+        let &mouse = "a"
+        echo "Mouse is enabled."
+    endif
+endfunction
+
 " view functions
 
 function IsBinary()
@@ -92,81 +178,5 @@ function FileSize()
     endif
 endfunction
 
-
-" ----------------------------------------------------
-" Key mapping
-" ----------------------------------------------------
-
-" the Leader
-" let mpleader = "<Space>"
-
-" tab controll
-
-map <Leader>tx :tabclose<CR>
-map <Leader>tc :tabedit<CR>
-
-
-" nerd tree toggle
-
-" autocmd VimEnter * NERDTree
-map <silent>,, :NERDTreeToggle<CR>
-
-" nerd commenter
-
-let g:NERDSpaceDelims=1
-map cc          <plug>NERDCommenterComment<CR>
-map cu          <plug>NERDCommenterUncomment<CR>
-map cs          <plug>NERDCommenterSexy<CR>
-map ci          <plug>NERDCommenterInvert<CR>
-map cy          <plug>NERDCommenterYank<CR>
-map ce          <plug>NERDCommenterToEOL<CR>
-map c<space>    <plug>NERDCommenterToggle<CR>
-
-map <c-h> :noh<CR>
-
-" ----------------------------------------------------
-" Functions
-" ----------------------------------------------------
-
-" tab to space : ctrl-t
-
-map <C-t> :call TabToSpaces()<CR>
-map! <C-t> <Esc>:call TabToSpaces()<CR>
-function TabToSpaces()
-    retab
-    echo "Convert tab to spaces."
-endfunction
-
-" toggle wrap : ctrl-l
-
-map <C-l> :call SwitchLineBreakingMode()<CR>
-map! <C-l> <Esc>:call SwitchLineBreakingMode()<CR>
-function SwitchLineBreakingMode()
-    if (&wrap == 0)
-        set wrap
-        echo "Switch to line breaking mode."
-    else
-        set nowrap
-        echo "Switch to one line mode."
-    endif
-endfunction
-
-" toggle mouse
-
-map <C-n> :call SwitchMouseMode()<CR>
-map! <C-n> <Esc>:call SwitchMouseMode()<CR>
-function SwitchMouseMode()
-    if (&mouse == "a")
-        let &mouse = ""
-        echo "Mouse is disabled."
-    else
-        let &mouse = "a"
-        echo "Mouse is enabled."
-    endif
-endfunction
-
-
-" ----------------------------------------------------
-" Setting end
-" ----------------------------------------------------
-
+filetype plugin indent on
+call     vundle#end()
